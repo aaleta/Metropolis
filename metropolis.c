@@ -42,29 +42,31 @@ int main ()
 {
     ini_ran(36);
     int N=10000,i,max=10,min=-10;
-    double data[Frec_Max],epsilon=0.1,cambio,cociente,x,xold;
+    double data[Frec_Max],epsilon=0.1,cambio,cociente,x,xnew;
     x=-9.8;
-    double delta=(max-min)/100;
+    double delta=(max-min)/100.;
+    
+    ini_ran(123);
 
-    for (i=0;i<N;i++){
+    for (i=0;i<Frec_Max;i++){
         data[i]=0;
     }
 
     for(i=1;i<N;i++){
         cambio=epsilon*2*(Random()-0.5);
-        xold=x+cambio;
-        if(xold>max)data[i]=xold-(max-min);
-        if(xold<min)data[i]=xold+(max-min);
+        xnew=x+cambio;
+        if(xnew>max)xnew=xnew-(max-min);
+        if(xnew<min)xnew=xnew+(max-min);
 
-        cociente=exp(20*(x*x-xold*xold));
+        cociente=exp(-20*(xnew*xnew-x*x));
 
-        if(Random()<cociente)x=xold;
+        if(Random()<cociente)x=xnew;
 
         data[(int)((x-min)/delta)]++;
         }
      FILE *f=fopen("resultasdasds.txt","w");
-     for (i=0;i<N;i++){
-        fprintf(f,"%lf /n",data[i]);
+     for (i=0;i<Frec_Max;i++){
+        fprintf(f,"%lf\n",data[i]);
     }
     fclose(f);
 
